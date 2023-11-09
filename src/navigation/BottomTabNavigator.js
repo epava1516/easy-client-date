@@ -1,16 +1,17 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Asegúrate de haber instalado esta biblioteca
-import SearchScreen from '../screens/search/SearchScreen';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import UserStackNavigator from './UserStackNavigator';
 import ChatStackNavigator from './ChatStackNavigator';
 import SearchStackNavigator from './SearchStackNavigator';
-
-// ... importa las demás pantallas
+import { useAuth } from '../contexts/AuthContext'; // Asegúrate de que la importación sea correcta
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+    // Llamar al hook useAuth como una función
+    const { isAuthenticated } = useAuth();
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -28,15 +29,24 @@ const BottomTabNavigator = () => {
 
                     return <MaterialIcons name={iconName} size={size} color={color} />;
                 },
-                // tabBarLabel: () => null, // No mostrar texto de la etiqueta
-                tabBarActiveTintColor: '#1E90FF', // Color para el icono activo
-                tabBarInactiveTintColor: 'gray', // Color para el icono inactivo
+                tabBarActiveTintColor: '#1E90FF',
+                tabBarInactiveTintColor: 'gray',
             })}
         >
-            <Tab.Screen name="Usuario" component={UserStackNavigator} options={{ unmountOnBlur: true }} />
-            <Tab.Screen name="Búsqueda" component={SearchStackNavigator} />
-            <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ unmountOnBlur: true }} />
-            {/* ... añade las demás pantallas */}
+            {isAuthenticated ? (
+                // Solo muestra estas pestañas si el usuario está autenticado
+                <>
+                    <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ unmountOnBlur: true }} />
+                    {/* ... añade aquí otras pantallas que requieren autenticación */}
+                </>
+            ) : (
+                // Estas pestañas se muestran cuando el usuario no está autenticado
+                <>
+                    <Tab.Screen name="Usuario" component={UserStackNavigator} options={{ unmountOnBlur: true }} />
+                    <Tab.Screen name="Búsqueda" component={SearchStackNavigator} />
+                    {/* ... añade aquí otras pantallas que no requieren autenticación */}
+                </>
+            )}
         </Tab.Navigator>
     );
 };
