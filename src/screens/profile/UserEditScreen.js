@@ -35,6 +35,23 @@ const UserProfile = () => {
         navigation.goBack();
     };
 
+    const selectAvatar = () => {
+        // Aquí iría la lógica para cambiar el avatar
+        // Por ejemplo, podrías usar una librería como 'react-native-image-picker' para seleccionar una imagen
+        console.log('Abrir selector de imagen');
+        // ImagePicker.showImagePicker(response => {
+        //   if (response.didCancel) {
+        //     console.log('User cancelled image picker');
+        //   } else if (response.error) {
+        //     console.log('ImagePicker Error: ', response.error);
+        //   } else {
+        //     const source = { uri: response.uri };
+        //     // Actualizar el estado con la nueva imagen
+        //     setUserInfo({...userInfo, avatar: source.uri});
+        //   }
+        // });
+    };
+
     return (
         <ScrollView style={styles.scrollContainer}>
             <View style={styles.container}>
@@ -43,6 +60,10 @@ const UserProfile = () => {
                         style={styles.avatar}
                         source={{ uri: userInfo.avatar }}
                     />
+                    {/* Asegúrate de que este botón esté correctamente posicionado y estilizado */}
+                    <TouchableOpacity onPress={selectAvatar}>
+                        <Text style={styles.changeAvatarText}>Change Avatar</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.formContainer}>
                     <Text style={styles.label}>Full Name</Text>
@@ -164,6 +185,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
     },
+    changeAvatarText: {
+        color: '#1E90FF', // Asegúrate de que este color se vea sobre el fondo de tu aplicación
+        marginTop: 10,
+        // Puede que necesites ajustar estos para hacer el texto más visible
+        fontSize: 16, // Añade un tamaño de fuente si no es lo suficientemente grande
+      },
 });
 
 export default UserProfile;
