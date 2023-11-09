@@ -1,9 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Asegúrate de haber instalado esta biblioteca
-import SearchScreen from '../screens/SearchScreen';
+import SearchScreen from '../screens/search/SearchScreen';
 import UserStackNavigator from './UserStackNavigator';
 import ChatStackNavigator from './ChatStackNavigator';
+import SearchStackNavigator from './SearchStackNavigator';
 
 // ... importa las demás pantallas
 
@@ -33,7 +34,7 @@ const BottomTabNavigator = () => {
             })}
         >
             <Tab.Screen name="Usuario" component={UserStackNavigator} options={{ unmountOnBlur: true }} />
-            <Tab.Screen name="Búsqueda" component={SearchScreen} />
+            <Tab.Screen name="Búsqueda" component={SearchStackNavigator} />
             <Tab.Screen name="Chat" component={ChatStackNavigator} options={{ unmountOnBlur: true }} />
             {/* ... añade las demás pantallas */}
         </Tab.Navigator>

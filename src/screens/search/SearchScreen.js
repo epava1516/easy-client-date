@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import Listado from './search/list';
-import Mapa from './search/map';
+import Listado from './list';
+import Mapa from './map';
 
 const SearchScreen = () => {
     const [viewMode, setViewMode] = useState('list'); // 'list' o 'map'
