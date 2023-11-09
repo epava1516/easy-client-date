@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 // Función auxiliar para ordenar los chats
 const getSortedChats = (chats) => {
@@ -59,80 +59,103 @@ const ChatListScreen = ({ navigation }) => {
         };
 
         return (
-            <View>
-                {showSpecialSeparator() && <View style={styles.specialSeparator} />}
-                <View style={styles.chatItem}>
-                    <TouchableOpacity onPress={() => goToChat(item.id, item.name)} style={styles.chatTouchable}>
-                        <Text style={styles.chatTitle}>{item.name}</Text>
-                        <Text style={styles.lastMessage}>{item.lastMessage}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => toggleFavorite(item.id)} style={styles.favoriteButton}>
-                        <Text style={styles.buttonText}>{item.isFavorite ? '★' : '☆'}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.deleteButton}>
-                        <Text style={styles.buttonText}>🗑️</Text>
-                    </TouchableOpacity>
+            <View style={styles.box}>
+                <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
+                <View style={styles.boxContent}>
+                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.description}>{item.lastMessage}</Text>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity
+                            style={[styles.button, styles.view]}
+                            onPress={() => toggleFavorite(item.id)}>
+                            <Text style={styles.icon}>{item.isFavorite ? '★' : '☆'}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styles.button, styles.profile]}
+                            onPress={() => goToChat(item.id, item.name)}>
+                            <Image
+                                style={styles.icon}
+                                source={{ uri: 'https://img.icons8.com/color/70/000000/cottage.png' }}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styles.button, styles.message]}
+                            onPress={() => handleDelete(item.id)}>
+                            <Text style={styles.icon}>🗑️</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
     };
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={chats}
-                renderItem={renderChatItem}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={renderSeparator}
-            />
-        </View>
+        <FlatList
+            data={chats}
+            renderItem={renderChatItem}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={renderSeparator}
+        />
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    image: {
+        width: 100,
+        height: 100,
+        borderRadius: 50, // added to make the image circular
     },
-    chatItem: {
-        flexDirection: 'row',
+    box: {
         padding: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center', // added to align items vertically
     },
-    chatTouchable: {
+    boxContent: {
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginLeft: 10,
     },
-    chatTitle: {
+    title: {
         fontSize: 18,
-        fontWeight: 'bold',
+        color: '#151515',
     },
-    lastMessage: {
-        fontSize: 14,
-        color: 'grey',
+    description: {
+        fontSize: 15,
+        color: '#646464',
     },
-    favoriteButton: {
-        marginLeft: 'auto',
-        padding: 10,
+    buttons: {
+        flexDirection: 'row',
+        marginTop: 10, // added to give space between text and buttons
     },
-    deleteButton: {
-        padding: 10,
+    button: {
+        height: 35,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        width: 50,
+        marginRight: 5,
     },
-    buttonText: {
-        fontSize: 24,
+    icon: {
+        width: 20,
+        height: 20,
     },
-    separator: {
-        height: 1,
-        backgroundColor: '#CCCCCC',
-        width: '100%',
-        marginTop: 10,
-        marginBottom: 10,
+    view: {
+        backgroundColor: '#eee',
     },
-    specialSeparator: {
-        height: 1,
-        backgroundColor: '#000',
+    profile: {
+        backgroundColor: '#1E90FF',
     },
+    message: {
+        backgroundColor: '#228B22',
+    },
+    // ... other styles as needed
 });
 
 export default ChatListScreen;

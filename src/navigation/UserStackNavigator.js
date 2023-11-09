@@ -6,9 +6,10 @@ const Stack = createStackNavigator();
 
 function UserStackNavigator() {
     return (
-        <Stack.Navigator initialRouteName="UserScreen">
-            <Stack.Screen name="UserScreen" component={UserScreen} />
-            <Stack.Screen name="UserEditScreen" component={UserEditScreen} />
+        <Stack.Navigator initialRouteName="Perfil">
+            <Stack.Screen name="Perfil" component={UserScreen} />
+            {/* <Stack.Screen name="UserScreen" component={UserScreen} options={{ headerShown: false }} /> */}
+            <Stack.Screen name="Editar perfil" component={UserEditScreen} />
         </Stack.Navigator>
     );
 }

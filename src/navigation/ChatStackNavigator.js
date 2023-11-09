@@ -6,8 +6,9 @@ const Stack = createStackNavigator();
 
 function ChatStackNavigator() {
     return (
-        <Stack.Navigator initialRouteName="ChatList">
-            <Stack.Screen name="ChatList" component={ChatListScreen} />
+        <Stack.Navigator initialRouteName="Chats">
+            <Stack.Screen name="Chats" component={ChatListScreen} />
+            {/* <Stack.Screen name="ChatList" component={ChatListScreen} options={{ headerShown: false }} /> */}
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
         </Stack.Navigator>
     );

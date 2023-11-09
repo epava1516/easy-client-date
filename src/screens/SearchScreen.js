@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import Listado from './search/listback';
+import Listado from './search/list';
 import Mapa from './search/map';
 
 const SearchScreen = () => {
