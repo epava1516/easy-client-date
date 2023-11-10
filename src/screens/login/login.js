@@ -1,44 +1,34 @@
 import React, { useState } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    TouchableOpacity,
-    Image,
-    Alert,
-} from 'react-native';
-import { useAuth } from '../../contexts/AuthContext'; // Asegúrate de que la ruta de importación sea correcta
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
+import apiClient from '../../api/Api'; // Asegúrate que la ruta sea correcta
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth(); // Usar el hook useAuth para obtener la función de inicio de sesión
+    const { setAuthenticated } = useAuth();
 
     const handleLogin = async () => {
-        // Aquí iría la lógica para verificar las credenciales del usuario
-        try {
-            // Por ejemplo, podrías hacer una petición a tu API
-            // const token = await signIn({ email, password }); // Asegúrate de tener una función signIn que haga esto
-            // Simulamos una respuesta del API
-            const token = 'token_simulado';
-            if (token) {
-                await login(token); // Utilizar la función login del contexto
-                navigation.replace('Perfil'); // Navegar a la pantalla de perfil
-            } else {
-                // Manejar la situación si las credenciales no son correctas
-                Alert.alert('Login Failed', 'Please check your credentials.');
-            }
-        } catch (error) {
-            // Manejar errores aquí, como problemas de red o de servidor
-            Alert.alert('Login Error', 'An error occurred during login.');
-        }
+        // try {
+        //     const response = await apiClient.post('/login', { email, password });
+        //     const { token } = response.data;
+        //     await AsyncStorage.setItem('userToken', token);
+        //     setAuthenticated(true);
+        //     navigation.replace('Perfil'); // Reemplaza con el nombre de tu pantalla de perfil
+        // } catch (error) {
+        //     Alert.alert('Login Error', error.response?.data?.message || 'An unexpected error occurred');
+        // }
+        navigation.replace('Perfil'); // Reemplaza con el nombre de tu pantalla de perfil
     };
 
     const handleSignUp = () => {
-        // Aquí iría la lógica para la creación de una nueva cuenta
-        // Simulamos una navegación hacia la pantalla de registro
-        navigation.navigate('Registro');
+        navigation.navigate('Registro'); // Reemplaza con el nombre de tu pantalla de registro
+    };
+
+    // Aquí puedes implementar la funcionalidad de 'Olvidé mi contraseña'
+    const handleForgotPassword = () => {
+        Alert.alert('Reset Password', 'Password reset functionality not implemented.');
     };
 
     const showAlert = (viewId) => {
@@ -46,101 +36,92 @@ const LoginScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <Image
-                    style={styles.inputIcon}
-                    source={{ uri: 'https://img.icons8.com/ios-filled/512/circled-envelope.png' }}
-                />
+        <ScrollView style={styles.scrollContainer}>
+            <View style={styles.container}>
+                <View style={styles.avatarContainer}>
+                    <Image
+                        style={styles.avatar}
+                        source={{ uri: 'https://img.icons8.com/ios-filled/512/circled-envelope.png' }}
+                    />
+                </View>
                 <TextInput
-                    style={styles.inputs}
+                    style={styles.input}
                     placeholder="Email"
                     keyboardType="email-address"
-                    underlineColorAndroid="transparent"
-                    onChangeText={(value) => setEmail(value)}
-                />
-            </View>
-
-            <View style={styles.inputContainer}>
-                <Image
-                    style={styles.inputIcon}
-                    source={{ uri: 'https://img.icons8.com/ios-glyphs/512/key.png' }}
+                    onChangeText={setEmail}
                 />
                 <TextInput
-                    style={styles.inputs}
+                    style={styles.input}
                     placeholder="Password"
                     secureTextEntry={true}
-                    underlineColorAndroid="transparent"
-                    onChangeText={(value) => setPassword(value)}
+                    onChangeText={setPassword}
                 />
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={handleLogin}
+                >
+                    <Text style={styles.editButtonText}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={handleForgotPassword}
+                >
+                    <Text style={styles.info}>Forgot your password?</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={handleSignUp}
+                >
+                    <Text style={styles.info}>Sign up</Text>
+                </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-                style={[styles.buttonContainer, styles.loginButton]}
-                onPress={handleLogin}>
-                <Text style={styles.loginText}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={() => showAlert('forgot password')}>
-                <Text>Forgot your password?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={handleSignUp}>
-                <Text>Sign up</Text>
-            </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#DCDCDC',
+        padding: 20,
     },
-    inputContainer: {
-        borderBottomColor: '#F5FCFF',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 30,
-        borderBottomWidth: 1,
-        width: 250,
-        height: 45,
+    avatarContainer: {
         marginBottom: 20,
-        flexDirection: 'row',
+    },
+    avatar: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+    },
+    input: {
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        fontSize: 16,
+        width: '90%',
+        marginBottom: 10,
+    },
+    editButton: {
+        backgroundColor: '#1E90FF',
+        borderRadius: 5,
+        paddingVertical: 10,
+        width: '90%',
         alignItems: 'center',
+        marginTop: 20,
     },
-    inputs: {
-        height: 45,
-        marginLeft: 16,
-        borderBottomColor: '#FFFFFF',
-        flex: 1,
+    editButtonText: {
+        color: '#fff',
+        textAlign: 'center',
+        fontSize: 18,
     },
-    inputIcon: {
-        width: 30,
-        height: 30,
-        marginLeft: 15,
-        justifyContent: 'center',
+    info: {
+        color: '#1E90FF',
+        marginTop: 10,
     },
-    buttonContainer: {
-        height: 45,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-        width: 250,
-        borderRadius: 30,
-    },
-    loginButton: {
-        backgroundColor: '#00b5ec',
-    },
-    loginText: {
-        color: 'white',
-    },
+    // Si tienes más estilos, por favor añádelos aquí
 });
 
 export default LoginScreen;

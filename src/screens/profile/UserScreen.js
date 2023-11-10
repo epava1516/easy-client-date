@@ -10,13 +10,15 @@ const UserProfile = () => {
         nickname: 'Jane',
         email: 'jane.doe@example.com',
         phone: '+1234567890',
-        isEscort: false, // Este campo puede ser controvertido dependiendo del contexto de uso
         title: 'Software Engineer',
         description: 'Passionate about technology and cats.',
         location: 'San Francisco, CA',
-        rates: 'Contact for details',
-        services: 'Full-stack development, Project management',
         avatar: 'https://www.bootdey.com/img/Content/avatar/avatar3.png',
+    };
+
+    // Navega a la pantalla de edición de perfil
+    const handleEditPress = () => {
+        navigation.navigate('Editar perfil'); // Asegúrate de que 'UserEditScreen' está registrado en tu stack de navegación
     };
 
     return (
@@ -39,25 +41,17 @@ const UserProfile = () => {
                     <Text style={styles.info}>{userInfo.phone}</Text>
                     <Text style={styles.label}>Location</Text>
                     <Text style={styles.info}>{userInfo.location}</Text>
-                    {userInfo.isEscort && (
-                        <>
-                            <Text style={styles.label}>Title</Text>
-                            <Text style={styles.info}>{userInfo.title}</Text>
-                            <Text style={styles.label}>Description</Text>
-                            <Text style={styles.info}>{userInfo.description}</Text>
-                            <Text style={styles.label}>Rates</Text>
-                            <Text style={styles.info}>{userInfo.rates}</Text>
-                            <Text style={styles.label}>Services</Text>
-                            <Text style={styles.info}>{userInfo.services}</Text>
-                        </>
-                    )}
-                    <TouchableOpacity
-                        style={styles.editButton}
-                        onPress={() => navigation.navigate('Editar perfil')} // Asegúrate de que 'UserEditScreen' está registrado en tu stack de navegación
-                    >
-                        <Text style={styles.editButtonText}>Edit</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.label}>Title</Text>
+                    <Text style={styles.info}>{userInfo.title}</Text>
+                    <Text style={styles.label}>Description</Text>
+                    <Text style={styles.info}>{userInfo.description}</Text>
                 </View>
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={handleEditPress}
+                >
+                    <Text style={styles.editButtonText}>Edit</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
