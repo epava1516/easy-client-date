@@ -28,6 +28,12 @@ const Listado = () => {
 
     const [users, setUsers] = useState(data)
 
+    const [expandedId, setExpandedId] = useState(null);
+
+    const toggleExpand = (id) => {
+        setExpandedId(expandedId === id ? null : id);
+    };
+
     /**
      * Shows an alert when a button is pressed.
      */
@@ -65,11 +71,15 @@ const Listado = () => {
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    style={[styles.button, styles.message]}
-                                    onPress={showAlert}>
+                                    style={[styles.button, isExpanded ? styles.message : styles.view]}
+                                    onPress={() => toggleExpand(item.id)}>
                                     <Image
                                         style={styles.icon}
-                                        source={{ uri: 'https://img.icons8.com/color/70/000000/plus.png' }}
+                                        source={{
+                                            uri: isExpanded 
+                                                ? 'https://img.icons8.com/color/70/000000/minus.png' 
+                                                : 'https://img.icons8.com/color/70/000000/plus.png'
+                                        }}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -109,6 +119,10 @@ const styles = StyleSheet.create({
     },
     buttons: {
         flexDirection: 'row',
+    },
+    buttonText: {
+        color: '#1E90FF',
+        // Añade aquí más estilos si es necesario
     },
     button: {
         height: 35,

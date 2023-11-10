@@ -8,8 +8,9 @@ import {
     Alert,
     ScrollView,
     Switch,
-    Picker // Importa Picker de la librería correspondiente
+    Platform
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../api/Api';
 
@@ -198,12 +199,12 @@ const SignupScreen = ({ navigation }) => {
                 {errors.age && <Text style={styles.errorText}>{errors.age}</Text>}
 
                 {/* Selector para el género */}
-                <View style={styles.pickerContainer}>
-                    <Text style={styles.label}>Gender:</Text>
+                <View style={[styles.input, styles.inputPicker]}>
                     <Picker
                         selectedValue={selectedGender}
-                        style={styles.picker}
                         onValueChange={(itemValue, itemIndex) => setSelectedGender(itemValue)}
+                        style={styles.picker}
+                        itemStyle={styles.pickerItem} // Solo tendrá efecto en iOS
                     >
                         <Picker.Item label="Male" value="male" />
                         <Picker.Item label="Female" value="female" />
@@ -244,16 +245,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 20,
-        paddingTop: 50, // Añade un poco más de padding en la parte superior
     },
     input: {
         borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 5,
-        padding: 10,
-        fontSize: 16,
+        padding: Platform.OS === 'android' ? 0 : 10,
+        marginTop: 10,
         width: '90%',
+        fontSize: 16,
         marginBottom: 10,
+        backgroundColor: '#fff',
     },
     inputError: {
         borderColor: 'red',
@@ -288,14 +290,45 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     label: {
-        fontSize: 16,
+        // Estilo para la etiqueta del input y el picker
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    inputContainer: {
+        // Estilo para el contenedor alrededor de tu input y el picker
+        marginBottom: 20,
+        width: '90%',
+        alignSelf: 'center',
+        justifyContent: 'center',
     },
     pickerContainer: {
-        width: '90%',
-        marginVertical: 10,
+        width: '100%',
+        backgroundColor: 'transparent',
     },
     picker: {
         width: '100%',
+        backgroundColor: 'transparent',
+    },
+    inputPicker: {
+        justifyContent: 'center', // Asegúrate de que el texto en Android esté centrado verticalmente
+        // La altura debe ser suficiente para el Picker en Android
+        paddingHorizontal: Platform.OS === 'android' ? 0 : undefined,
+        // Ajustar la altura para Android para que coincida con tus TextInput
+        height: Platform.OS === 'android' ? 40 : undefined,
+    },
+    picker: {
+        width: '100%', // El Picker debe ocupar todo el ancho de la View
+        backgroundColor: 'transparent',
+        // Eliminar cualquier padding interno en Android
+        paddingHorizontal: Platform.OS === 'android' ? 0 : undefined,
+    },
+    pickerItem: {
+        ...(Platform.OS === 'ios' && {
+            fontSize: 16,
+        }),
+        // Estilo para los items del Picker en iOS
+        fontSize: 16, // Ajusta el tamaño de la fuente aquí
+        height: Platform.OS === 'android' ? 50 : undefined, // Establece una altura para Android si es necesario
     },
 
     // ...otros estilos que necesites...
